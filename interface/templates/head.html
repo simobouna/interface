@@ -1,0 +1,81 @@
+{% load static %}
+
+<!-- Header inclus dans tous les autres fichiers -->
+<!-- Modifier ce fichier modifiera le header dans tous les autres -->
+
+<!-- Il y a deux cas :  si l'user est authentifié ou s'il ne l'est pas -->
+{% if user.is_authenticated  %}
+
+<header>
+    <!-- Navigation bar bootstrap -->
+    <nav class="navbar navbar-expand-xl navbar-light bg-light" id="website-logo">
+        <!-- Logo -->
+        <a class="navbar-brand order-0 mr-3" href="index.html">
+            <img src="{% static 'logo.png' %}" class="logo" alt="" style="height: 50px">
+        </a>
+
+        <!-- Elements de la navbar -->
+        <div class="navbar-nav collapse navbar-collapse order-1" id="navbarText" style="align-items: right;">
+            <form class="form-inline" action="index.html" method="post" style="margin-left: auto; margin-right:0px">
+
+            <a href="" class="text-decoration-none text-reset">
+                <button type="button" class="btn-outline-sitinnov btn ml-3" name="button">
+                    Forcage
+                </button>
+            </a>
+            <a href="" class="text-decoration-none text-reset">
+                <button type="button" class="btn-outline-sitinnov btn ml-3" name="button">
+                    Configuration
+                </button>
+            </a>
+            <a href="journal.html" class="text-decoration-none text-reset">
+                <button type="button" class="btn-outline-sitinnov btn ml-3" name="button">
+                    Journal
+                </button>
+            </a>
+            <a href="decoder.html" class="text-decoration-none text-reset">
+                <button type="button" class="btn-outline-sitinnov btn ml-3" name="button">
+                    Decouder
+                </button>
+            </a>
+
+
+            <!-- Bouton de déconnexion -->
+            <a href="logout" class="text-decoration-none text-reset">
+                <button type="button" class="btn btn-outline-danger ml-3" name="button">
+                    Déconnexion
+                </button>
+            </a>
+        </form>
+    </div>
+</nav>
+</header>
+
+{% else %}
+<header>
+    <!-- Navigation bar bootstrap -->
+    <nav class="navbar navbar-expand-xl navbar-light bg-light" id="website-logo">
+        <!-- Logo -->
+        <a class="navbar-brand order-0 mr-3" href="index.html">
+            <img src="{% static 'logo.png' %}" class="logo" alt="" style="height: 50px">
+            <!-- <span class="logo-text align-middle">Adopte Ma Boîte</span> -->
+        </a>
+
+        <!-- Elements de la navbar -->
+        <div class="navbar-nav collapse navbar-collapse order-1" id="navbarText" style="align-items: right;">
+            <form class="form-inline" action="index.html" method="post" style="margin-left: auto; margin-right:0px">
+
+
+
+
+            <!-- Bouton de connexion -->
+            <a href="connect.html" class="text-decoration-none text-reset">
+                <button type="button" class="btn btn-outline-sitinnov ml-3" name="button">
+                    Se connecter
+                </button>
+            </a>
+        </form>
+    </div>
+</nav>
+</header>
+{% endif %}

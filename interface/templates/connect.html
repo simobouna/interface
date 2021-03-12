@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <title>NRGY Admin</title>
+        <!-- Style -->
+        {% include 'style.html' %}
+    </head>
+    <body>
+        <!-- Header -->
+        {% include 'head.html' %}
+
+        <!-- Main content -->
+        <div class="bgimg min-h-500">
+            <div class="wrapper wrapper--w680" style="padding-bottom: 40px; padding-top: 40px">
+                <div class="card card-4">
+                    <div class="card-body">
+                        <div class="container">
+
+                            <!-- Alertes en fonction des actions utilisateurs -->
+                            <div>
+                                {% if messages %}
+                                    {% for message in messages %}
+                                      {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                        <div class="alert alert-success"><strong>{{ message }}</strong></div>
+                                      {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                                        <div class="alert alert-warning"><strong>{{ message }}</strong></div>
+                                      {% else %}
+                                        <div class="alert alert-danger"><strong>{{ message }}</strong></div>
+                                      {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <!-- Formulaire de connexion -->
+                            <h2 class="title">Connexion</h2>
+                            <form method="POST" action="/login">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <label class="label">Identifiant</label>
+                                            <input class="input--style-4" type="text" name="username">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <label class="label">Mot de passe</label>
+                                            <input class="input--style-4" type="password" name="mdp">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mx-auto">
+                                    <button class="btn btn--radius-2 btn--blue btn-outline-sitinnov " type="submit">
+                                        <a class="text-decoration-none text-reset">Valider</a>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer HTML -->
+        {% include 'footer.html' %}
+    </body>
+</html>

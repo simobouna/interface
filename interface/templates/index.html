@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>NRGY Admin</title>
+    {% include 'style.html' %}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header HTML -->
+    {% include 'head.html' %}
+    <style type="text/css" media="screen">
+    .container-background {
+        color:rgb(0, 0, 0);
+        background-color:white;
+        background-image:url(static/background.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        width: auto;
+        height: 800px;
+    }
+    h2{
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 800px;
+        font-size: 6em;
+        font-family: 'Amatic SC', cursive;
+        color:rgb(255, 255, 255);
+    }
+    </style>
+    <div class="container-background">
+        <h2>NRGYBOX ADMINISTRATION</h2>
+    </div>
+
+    <hr>
+
+</body>
+<footer>
+    {% include 'footer.html' %}
+</footer>
+
+</html>

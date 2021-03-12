@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+  {% load static %}
+  
+  <html lang="en" dir="ltr">
+    <head>
+      <title>NRGY Admin</title>
+      {% include 'style.html' %}
+    </head>
+  
+  <body>
+      <!-- Header HTML -->
+      {% include 'head.html' %}
+      <style>
+        h2{
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 200px;
+
+        }
+        th{
+          text-align: center;
+        }
+        td{
+          text-align: center;
+        }
+      </style>
+        <!-- Alertes en fonction des actions utilisateurs -->
+        <div>
+          {% if messages %}
+              {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                  <div class="alert alert-success"><strong>{{ message }}</strong></div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                  <div class="alert alert-warning"><strong>{{ message }}</strong></div>
+                {% else %}
+                  <div class="alert alert-danger"><strong>{{ message }}</strong></div>
+                {% endif %}
+              {% endfor %}
+          {% endif %}
+      </div>
+      <h2 class="title">Journal :</h2>
+      <form method="post" >
+        {% csrf_token %}
+        <select name ='text' id='select' class="form-control" style="margin: 0 20%;">
+        </select>
+        <div class="text-center mx-auto">
+          <button class="btn btn--radius-2 btn--blue btn-outline-sitinnov " style="margin-top: 1%;" type="submit">
+              <a class="text-decoration-none text-reset" >Valider</a>
+          </button>
+        </div>
+      </form>
+      {{ payloads|json_script:'data' }}
+      {{ type|json_script:'names' }}
+      {{ devices|json_script:'devices' }}
+      <script type="text/javascript" src="{% static 'journal.js' %}"></script>
+      <script type="text/javascript" src="{% static 'decoder.js' %}"></script>
+  </body>
+  <footer>
+      {% include 'footer.html' %}
+  </footer>
+  
+  </html>

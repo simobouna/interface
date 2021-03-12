@@ -1,0 +1,310 @@
+@font-face {
+  font-family: 'Cantarell';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Cantarell Regular'), local('Cantarell-Regular'), url(https://fonts.gstatic.com/s/cantarell/v9/B50NF7ZDq37KMUvlO015jKJr.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Regles Universelles */
+*{
+  font-family:'Cantarell', sans-serif;
+}
+
+/* Liste des projets (projet.html)*/
+.badge{
+  border: 1px solid #1d51c1;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  vertical-align: middle;
+  text-align:center;
+}
+
+.red{
+  border: 1px solid #FF0000;
+}
+
+.badge-img{
+  width:25px;
+  border-radius: 50%;
+  margin-right:6px;
+}
+
+.btn-sitinnov{
+  color: #fff;
+  background-color: #1d51c1;
+  border-color: #1d51c1;
+}
+
+.btn-sitinnov1{
+  /* font-family: 'Indie Flower', cursive; */
+  font-size: 20px;
+  color: #fff; /* couleur du texte unhovered */
+  border-color: rgb(120, 155, 23);
+  width: 250px;
+  height: 250px; /* = width */
+  padding: 60px; /* à ajuster, la largeur du texte doit être inférieure mais proche de width-2*padding */
+  /* background-color: #1d51c1; */
+  border-radius: 50%;
+  /* margin: -30px; */
+  margin: 30px;
+}
+
+.sitinnov-div-abelo1{
+    margin-top: 35px; /* = (width - 2*padding - hauteurdutexte)/2 */
+}
+
+.sitinnov-div-abelo2{
+    margin-top: 20px; /* = (width - 2*padding - hauteurdutexte)/2 */
+}
+
+.btn-sitinnov2{
+  /* font-family: 'Indie Flower', cursive; */
+  font-size: 20px;
+  /* color: rgb(120, 155, 23); */
+  color: #1d51c1; /* couleur du texte unhovered */
+  border-color:white;
+  width: 250px;
+  height: 250px; /* = width */
+  padding: 60px; /* à ajuster, la largeur du texte doit être inférieure mais proche de width-2*padding */
+  background-color: #fff;
+  border-radius: 50%;
+  /* margin: -30px; */
+  margin: 30px;
+}
+
+.btn-outline-sitinnov{
+  color: #1d51c1;
+  border-color: #1d51c1;
+  margin-bottom: 5px; /* = (width - 2*padding - hauteurdutexte)/2 */
+
+}
+
+.btn-outline-sitinnov:hover{
+  color:#fff;
+  background-color: #1d51c1;
+  border-color: #1d51c1;
+}
+
+/* navbar, Header */
+.logo {
+  max-width:200%;
+  max-height:100%;
+}
+
+.logo-text{
+  font-size:30px;
+  color: #1d51c1;
+}
+
+/* banniere */
+.banner {
+  height: 500px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.logo1 {
+  width:60%;
+  height:60%;
+}
+
+.ban {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+}
+
+.log {
+  width: 100%;
+  max-width: 100%;
+}
+
+.inner-banner {
+  position: relative;
+  top: 30%;
+  width: 100%;
+  text-align: center;
+}
+
+.inner-banner h1{
+  color: #ffffff;
+  text-shadow: 1px 1px 20px #000000;
+}
+
+.inner-banner .btn-custom {
+  background-color: #3498DB;
+  color: #ffffff;
+}
+
+.inner-banner .btn-custom:hover {
+  background-color: #2C3E50;
+}
+
+.bgimg{
+  background-image: url('background-connect.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  width: auto;
+  height: 800px;
+}
+
+/* Shorthand(s) Classe(s) */
+
+.pb-25{
+  padding-bottom:25px;
+}
+.pb-50{
+  padding-bottom:50px;
+}
+.pb-75{
+  padding-bottom:75px;
+}
+.pb-100{
+  padding-bottom:100px;
+}
+
+.min-h-300{
+  min-height: 300px;
+}
+
+.min-h-500{
+  min-height: 500px;
+}
+
+.min-h-650{
+  min-height: 650px;
+}
+
+.min-h-800{
+  min-height: 800px;
+}
+
+.min-h-850{
+  min-height: 850px;
+}
+
+.min-h-875{
+  min-height: 875px;
+}
+
+.min-h-900{
+  min-height: 900px;
+}
+
+.pos-mid-abelo{
+    position: relative;
+    top:-45px;
+}
+
+.pos-down-5em{
+  position:relative;
+  top:5em;
+}
+
+.pos-down-10em{
+  position:relative;
+  top:10em;
+}
+
+.pos-down-15em{
+  position:relative;
+  top:15em;
+}
+
+.pos-down{
+  position: relative;
+  top:150px;
+}
+
+.pos-down-0{
+  position: relative;
+  top:0px;
+}
+
+.pos-down-20{
+  position: relative;
+  top:20px;
+}
+
+.pos-down-25{
+  position: relative;
+  top:25px;
+}
+
+.pos-down-35{
+  position: relative;
+  top:35px;
+}
+
+.pos-down-50{
+  position: relative;
+  top:50px;
+}
+
+.pos-down-70{
+  position: relative;
+  top:70px;
+}
+
+/* Profil */
+
+.avatar{
+  border-radius: 50%;
+  width:200px;
+}
+
+/* inscription */
+
+.date{
+  width:148%;
+  text-align:center;
+}
+
+.textarea{
+  width:100%;
+  resize:none;
+  border-radius:5px;
+  background: #fafafa;
+  box-shadow: inset 0px 1px 1px 0px rgba(0, 0, 0, 0.08);
+  font-size: 16px;
+  color:#666;
+  border: 0px;
+  padding: 15px 25px;
+}
+
+/* Container needed to position the button. Adjust the width as needed */
+.containerIndex {
+  position: relative;
+  display: inline;
+}
+
+/* Style the button and place it in the middle of the container/image */
+.containerIndex .btn {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 80%;
+  height: 250px;
+  text-align: center;
+  margin: auto;
+}
+
+.containerIndex .btn:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
