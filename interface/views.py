@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 import requests, json
-from .config import get_type
+from .config_name import get_type
+from .decode import Decode
 
 def index(request):
         return render(request, 'index.html')
@@ -12,8 +13,9 @@ def decoder(request):
     data = request.POST.get('text', False)
     if data :
         try:
-            res = requests.get('http://127.0.0.1:8080/decode?data=' + json.dumps(data))
-            message = json.loads(res.content)['message']
+            # res = requests.get('http://127.0.0.1:8080/decode?data=' + json.dumps(data))
+            # message = json.loads(res.content)['message']
+            message = Decode(data).decode()
             return render(request, 'decoder.html',{'message':message, 'type': get_type(message)})
         except ValueError:
             messages.error(request,'Veuillez entrer un bon code SVP')
@@ -44,7 +46,8 @@ def journal(request):
 
         Datas = []
         for data in payloads:
-            Datas += json.loads(requests.get('http://127.0.0.1:8080/decode?data=' + json.dumps(data)).content)['message']
+            #Datas += json.loads(requests.get('http://127.0.0.1:8080/decode?data=' + json.dumps(data)).content)['message']
+            Datas += Decode(data).decode()
         return render(request, 'journal.html',{'devices': list(names.keys()), 'payloads': Datas, 'type': get_type(Datas)})
     else:
         return render(request, 'journal.html',{'devices': list(names.keys())})
