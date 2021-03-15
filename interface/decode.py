@@ -23,7 +23,7 @@ class Decode:
             decimals = []
             for b in type[1]:
                 #Traiter le cas de la position GPS (Valeurs negatives)
-                if (first == 5 and second == 2 and (b == 25 or b == 26)):
+                if b == 25 or b == 26 :
                     if self.binary[index:index + 1] == '1':
                         neg_value = self.binary[index + 1:index + b].replace('1', '2').replace('0', '1').replace('2', '0')
                         neg_value = int(neg_value, 2) + 1

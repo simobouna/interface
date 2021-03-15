@@ -12,19 +12,25 @@
       <!-- Header HTML -->
       {% include 'head.html' %}
       <style>
-        h2{
+        h1{
           text-align: center;
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 200px;
-
+          height: 100px;
+        }
+        h4{
+          text-align: center;
+          margin: 1% 0;
         }
         th{
           text-align: center;
         }
         td{
           text-align: center;
+        }
+        table{
+          width: 80%;
         }
       </style>
         <!-- Alertes en fonction des actions utilisateurs -->
@@ -41,13 +47,52 @@
               {% endfor %}
           {% endif %}
       </div>
-      <h2 class="title">Journal :</h2>
+      <h1 class="title">Journal :</h1>
       <form method="post" >
         {% csrf_token %}
-        <select name ='text' id='select' class="form-control" style="margin: 0 20%;">
-        </select>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm">
+              <h4>Device</h4>
+              <select name ='name' id='select' class="form-control">
+              </select>
+            </div>
+            <div class="col-sm">
+              <h4>From</h4>
+              <input class="form-control" type="datetime-local" name='date_from'> 
+            </div>
+            <div class="col-sm">
+              <h4>To</h4>
+              <input class="form-control" type="datetime-local"  name='date_to'>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <h4>Type de message</h4>
+              <select name='type_message' class="form-control">
+                <!--option></option>
+                <option>Ligne de vie</option> 
+                <option>Réalisé</option>
+                <option>Acquittement</option> 
+                <option>Programme</option>
+                <option>Configuration générale</option>
+                <option>Downlinks</option>
+                <option>Join request/accept</option-->
+                <option>Réalisé</option>
+              </select>
+            </div>
+            <div class="col-sm">
+              <h4>Filter</h4>
+              <input class="form-control" type="text"  name='filter_message'>
+            </div>
+            <div class="col-sm">
+              <h4>Nombre de messages</h4>
+              <input class="form-control" type="text"  value="100" name='limit'>
+            </div>
+          </div>
+        </div>
         <div class="text-center mx-auto">
-          <button class="btn btn--radius-2 btn--blue btn-outline-sitinnov " style="margin-top: 1%;" type="submit">
+          <button class="btn btn--radius-2 btn--blue btn-outline-sitinnov " style="margin-top: 2%;" type="submit">
               <a class="text-decoration-none text-reset" >Valider</a>
           </button>
         </div>
