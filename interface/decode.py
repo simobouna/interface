@@ -15,7 +15,6 @@ class Decode:
         while (self.bits - index > 7):
             #Recuperer la valeur des premiers 4 bits (type) 
             first = int(self.binary[index:4+index], 2)
-            if first == 0 : return list
             #Recuperer la valeur du second type
             second = int(self.binary[4+index:4 + index + get_next_bits()[first]], 2)
             #identifier le type du message

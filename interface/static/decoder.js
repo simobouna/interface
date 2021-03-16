@@ -17,14 +17,26 @@ for (i = 0; i < types.length; i++) {
     tbody = document.createElement('tbody');
     names = types[i][1].split(',');
     data = datas[i];
+    k = 0;
     for (j = 0; j < names.length; j++) {
         tmp = document.createElement('th');
         tmp.textContent = names[j];
         thead.append(tmp);    
         tmp = document.createElement('td');
-        tmp.textContent = data[j];
+        if (types[i][2][j] == 0){ 
+            tmp.textContent = data[k];}
+        else{
+            if (types[i][2][j] == 3){
+                tmp.textContent = '202'+data[k]+'/'+data[k+1]+'/'+data[k+2]
+                k += 2
+            }else{
+                tmp.textContent = data[k]+':'+data[k+1]
+                k += 1
+            }
+        }
         tbody.append(tmp); 
         table.append(thead,tbody);
+        k++;
     }
     body.append(table);
 }

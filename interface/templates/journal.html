@@ -70,15 +70,14 @@
             <div class="col-sm">
               <h4>Type de message</h4>
               <select name='type_message' class="form-control">
-                <!--option></option>
-                <option>Ligne de vie</option> 
+                <option></option>
+                <!--option>Ligne de vie</option> 
                 <option>Réalisé</option>
                 <option>Acquittement</option> 
                 <option>Programme</option>
                 <option>Configuration générale</option>
-                <option>Downlinks</option>
-                <option>Join request/accept</option-->
-                <option>Réalisé</option>
+                <option value="downlink">Downlinks</option>
+                <option value="join">Join request/accept</option-->
               </select>
             </div>
             <div class="col-sm">
@@ -87,7 +86,7 @@
             </div>
             <div class="col-sm">
               <h4>Nombre de messages</h4>
-              <input class="form-control" type="text"  value="100" name='limit'>
+              <input class="form-control" type="text"  value="15" name='limit'>
             </div>
           </div>
         </div>

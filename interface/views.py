@@ -12,11 +12,13 @@ def decoder(request):
     data = request.POST.get('text', False)
     if data :
         try:
-            # res = requests.get('http://127.0.0.1:8080/decode?data=' + json.dumps(data))
-            # message = json.loads(res.content)['message']
             message = Decode(data).decode()
-            return render(request, 'decoder.html',{'message':message, 'type': get_type(message)})
-        except ValueError:
+            print(message)
+            title = []
+            for msg in message:
+                title.append(get_type(msg))
+            return render(request, 'decoder.html',{'message':message, 'type': title})
+        except KeyError:
             messages.error(request,'Veuillez entrer un bon code SVP')
             return render(request, 'decoder.html')
     else :
@@ -31,7 +33,7 @@ def journal(request):
     name = request.POST.get('name', False)
     date_from = request.POST.get('date_from', False)
     date_to = request.POST.get('date_to', False)
-    #type_message = request.POST.get('type_message', False)
+    type_message = request.POST.get('type_message', False)
     filter_message = request.POST.get('filter_message', False)
     limit = request.POST.get('limit', False)
     res1 = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices?limit=1000&offset=0',headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
@@ -48,21 +50,53 @@ def journal(request):
             requete +=  '&to='+ date_to
         if filter_message:
             requete +=  '&@any='+ filter_message
-        res2 = json.loads(requests.get(requete,headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
-        payloads = []
+        msgs = json.loads(requests.get(requete,headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
+        output_titles = []
+        output_values = []
  
-        for i in range(len(res2)):
-            if 'payload' in res2[i]['content'] and res2[i]['content']['payload'][0:2] == 'F3':
-                payloads.append(res2[i]['content']['payload'])
-                
-        Datas = []
-        for data in payloads:
-            #Datas += json.loads(requests.get('http://127.0.0.1:8080/decode?data=' + json.dumps(data)).content)['message']
-            try :
-                Datas +=  Decode(data).decode()
-            except ValueError:
-                return render(request, 'decoder.html')
-        return render(request, 'journal.html',{'devices': list(names.keys()), 'payloads': Datas, 'type': get_type(Datas)})
+        for i in range(len(msgs)):
+            tmp_value = []
+
+            tmp_value.append(msgs[i]['description'])
+
+            index = msgs[i]['detailedDescription'].lower().find('mac')
+            if  index == -1:
+                if msgs[i]['description'].lower().find('join') != -1:
+                    tmp_value.append(msgs[i]['detailedDescription'])
+                else :
+                    tmp_value.append("Vide")
+            else:
+                tmp_value.append(msgs[i]['detailedDescription'][index:])
+
+            if 'port' in msgs[i]['content']: 
+                tmp_value.append(msgs[i]['content']['port']) 
+            else : 
+                tmp_value.append("Vide")
+
+            if 'fcnt' in msgs[i]['content']['frameHeader']: 
+                tmp_value.append(msgs[i]['content']['frameHeader']['fcnt']) 
+            else : 
+                tmp_value.append("Vide")
+
+            if 'signal' in msgs[i]['content']: 
+                tmp_value.append(msgs[i]['content']['signal']['sf']) 
+            else : 
+                tmp_value.append("Vide")
+
+            if 'payload' in msgs[i]['content']:
+                data = msgs[i]['content']['payload']
+                try :
+                    decode = Decode(data).decode()
+                    for msg in decode:
+                        output_titles.append([get_type(msg)[0],"Desc,Detail desc,Port,fcnt,sf," + get_type(msg)[1],'00000'+get_type(msg)[2]])
+                        output_values.append( tmp_value + msg)
+                except KeyError:
+                    output_titles.append(["Message","Desc,Detail desc,Port,fcnt,sf",'00000'])
+                    output_values.append(tmp_value)
+            else :
+                output_titles.append(["Message","Desc,Detail desc,Port,fcnt,sf",'00000'])
+                output_values.append(tmp_value)
+        return render(request, 'journal.html',{'devices': list(names.keys()), 'payloads': output_values, 'type': output_titles})
     else:
         return render(request, 'journal.html',{'devices': list(names.keys())})
 
