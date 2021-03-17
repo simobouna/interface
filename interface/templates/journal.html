@@ -70,14 +70,13 @@
             <div class="col-sm">
               <h4>Type de message</h4>
               <select name='type_message' class="form-control">
-                <option></option>
-                <!--option>Ligne de vie</option> 
-                <option>Réalisé</option>
-                <option>Acquittement</option> 
-                <option>Programme</option>
-                <option>Configuration générale</option>
-                <option value="downlink">Downlinks</option>
-                <option value="join">Join request/accept</option-->
+                <option value='0'></option>
+                <option value='F1'>Ligne de vie</option> 
+                <option value='F3'>Réalisé</option>
+                <option value='F4'>Acquittement Programme de marche</option> 
+                <option value='F5'>Acquittement Programme hebdomadaire</option> 
+                <option value='F6'>Configuration générale</option>
+                <option value='F7'>Programme</option>
               </select>
             </div>
             <div class="col-sm">
@@ -98,9 +97,20 @@
       </form>
       {{ payloads|json_script:'data' }}
       {{ type|json_script:'names' }}
-      {{ devices|json_script:'devices' }}
+      {{ devices|json_script:'devices' }} 
+      {{ type_message|json_script:'type_message' }}
       <script type="text/javascript" src="{% static 'journal.js' %}"></script>
-      <script type="text/javascript" src="{% static 'decoder.js' %}"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+           var input = document.getElementById('select');
+           if (localStorage['name']) { 
+               input.value = localStorage['name']; 
+           }
+           input.onchange = function () {
+                localStorage['name'] = this.value;
+            }
+        });
+        </script>
   </body>
   <footer>
       {% include 'footer.html' %}

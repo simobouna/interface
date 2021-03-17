@@ -18,7 +18,7 @@ def decoder(request):
             for msg in message:
                 title.append(get_type(msg))
             return render(request, 'decoder.html',{'message':message, 'type': title})
-        except KeyError:
+        except :
             messages.error(request,'Veuillez entrer un bon code SVP')
             return render(request, 'decoder.html')
     else :
@@ -36,11 +36,10 @@ def journal(request):
     type_message = request.POST.get('type_message', False)
     filter_message = request.POST.get('filter_message', False)
     limit = request.POST.get('limit', False)
-    res1 = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices?limit=1000&offset=0',headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
+    nrgyboxs = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices?limit=1000&offset=0',headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
     names = dict()
-    for i in range(len(res1)):
-        names.update({ res1[i]['name'] : res1[i]['id']})
-    
+    for i in range(len(nrgyboxs)):
+        names.update({ nrgyboxs[i]['name'] : nrgyboxs[i]['id']})
     if name :
         nodeId = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices/'+names[name],headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)['interfaces'][0]['nodeId']
         requete = 'https://liveobjects.orange-business.com/api/v0/auditlog/messages?offset=0&sort=desc&limit='+ limit + '&source.nodeId=' + nodeId
@@ -53,50 +52,98 @@ def journal(request):
         msgs = json.loads(requests.get(requete,headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
         output_titles = []
         output_values = []
- 
-        for i in range(len(msgs)):
-            tmp_value = []
 
-            tmp_value.append(msgs[i]['description'])
+        if type_message == '0':
+            for i in range(len(msgs)):
+                tmp_value = []
 
-            index = msgs[i]['detailedDescription'].lower().find('mac')
-            if  index == -1:
-                if msgs[i]['description'].lower().find('join') != -1:
-                    tmp_value.append(msgs[i]['detailedDescription'])
-                else :
+                tmp_value.append(msgs[i]['timestamp'][:16].replace('-','/').replace('T',' '))
+
+                tmp_value.append(msgs[i]['description']) 
+
+                index = msgs[i]['detailedDescription'].lower().find('mac')
+                if  index == -1:
+                    if msgs[i]['description'].lower().find('join') != -1:
+                        tmp_value.append(msgs[i]['detailedDescription'])
+                    else :
+                        tmp_value.append("Vide")
+                else:
+                    tmp_value.append(msgs[i]['detailedDescription'][index:])
+
+                if 'port' in msgs[i]['content']: 
+                    tmp_value.append(msgs[i]['content']['port']) 
+                else : 
                     tmp_value.append("Vide")
-            else:
-                tmp_value.append(msgs[i]['detailedDescription'][index:])
 
-            if 'port' in msgs[i]['content']: 
-                tmp_value.append(msgs[i]['content']['port']) 
-            else : 
-                tmp_value.append("Vide")
+                if 'fcnt' in msgs[i]['content']['frameHeader']: 
+                    tmp_value.append(msgs[i]['content']['frameHeader']['fcnt']) 
+                else : 
+                    tmp_value.append("Vide")
 
-            if 'fcnt' in msgs[i]['content']['frameHeader']: 
-                tmp_value.append(msgs[i]['content']['frameHeader']['fcnt']) 
-            else : 
-                tmp_value.append("Vide")
+                if 'signal' in msgs[i]['content']: 
+                    tmp_value.append(msgs[i]['content']['signal']['sf']) 
+                else : 
+                    tmp_value.append("Vide")
 
-            if 'signal' in msgs[i]['content']: 
-                tmp_value.append(msgs[i]['content']['signal']['sf']) 
-            else : 
-                tmp_value.append("Vide")
 
-            if 'payload' in msgs[i]['content']:
-                data = msgs[i]['content']['payload']
-                try :
-                    decode = Decode(data).decode()
-                    for msg in decode:
-                        output_titles.append([get_type(msg)[0],"Desc,Detail desc,Port,fcnt,sf," + get_type(msg)[1],'00000'+get_type(msg)[2]])
-                        output_values.append( tmp_value + msg)
-                except KeyError:
-                    output_titles.append(["Message","Desc,Detail desc,Port,fcnt,sf",'00000'])
+                if 'payload' in msgs[i]['content'] :
+                    data = msgs[i]['content']['payload']
+                    try :
+                        decode = Decode(data).decode()
+                        for msg in decode:
+                            output_titles.append([get_type(msg)[0],"Timestamp,Desc,Detail desc,Port,fcnt,sf," + get_type(msg)[1],'000000'+get_type(msg)[2]])
+                            output_values.append( tmp_value + msg)
+                    except :
+                        output_titles.append(["Message","Timestamp,Desc,Detail desc,Port,fcnt,sf",'000000'])
+                        output_values.append(tmp_value)
+                else :
+                    output_titles.append(["Message","Timestamp,Desc,Detail desc,Port,fcnt,sf",'000000'])
                     output_values.append(tmp_value)
-            else :
-                output_titles.append(["Message","Desc,Detail desc,Port,fcnt,sf",'00000'])
-                output_values.append(tmp_value)
-        return render(request, 'journal.html',{'devices': list(names.keys()), 'payloads': output_values, 'type': output_titles})
+            return render(request, 'journal.html',{'devices': list(names.keys()), 'payloads': output_values, 'type': output_titles ,'type_message': type_message})
+        else :
+            for i in range(len(msgs)):
+                if 'payload' in msgs[i]['content'] and msgs[i]['content']['payload'][0:2] == type_message:
+                    tmp_value = []
+
+                    tmp_value.append(msgs[i]['timestamp'][:16].replace('-','/').replace('T',' '))
+
+                    tmp_value.append(msgs[i]['description']) 
+
+                    index = msgs[i]['detailedDescription'].lower().find('mac')
+                    if  index == -1:
+                        if msgs[i]['description'].lower().find('join') != -1:
+                            tmp_value.append(msgs[i]['detailedDescription'])
+                        else :
+                            tmp_value.append("Vide")
+                    else:
+                        tmp_value.append(msgs[i]['detailedDescription'][index:])
+
+                    if 'port' in msgs[i]['content']: 
+                        tmp_value.append(msgs[i]['content']['port']) 
+                    else : 
+                        tmp_value.append("Vide")
+
+                    if 'fcnt' in msgs[i]['content']['frameHeader']: 
+                        tmp_value.append(msgs[i]['content']['frameHeader']['fcnt']) 
+                    else : 
+                        tmp_value.append("Vide")
+
+                    if 'signal' in msgs[i]['content']: 
+                        tmp_value.append(msgs[i]['content']['signal']['sf']) 
+                    else : 
+                        tmp_value.append("Vide")
+
+                    data = msgs[i]['content']['payload']
+                    try :
+                        decode = Decode(data).decode()
+                        for msg in decode:
+                            output_titles.append([get_type(msg)[0],"Timestamp,Desc,Detail desc,Port,fcnt,sf," + get_type(msg)[1],'000000'+get_type(msg)[2]])
+                            output_values.append( tmp_value + msg)
+                    except :
+                        output_titles.append(["Message","Timestamp,Desc,Detail desc,Port,fcnt,sf",'000000'])
+                        output_values.append(tmp_value)
+
+            return render(request, 'journal.html',{'devices': list(names.keys()), 'payloads': output_values, 'type': output_titles, 'type_message': type_message})
     else:
         return render(request, 'journal.html',{'devices': list(names.keys())})
 
