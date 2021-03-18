@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
   {% load static %}
   
   <html lang="en" dir="ltr">
@@ -47,6 +46,7 @@
               {% endfor %}
           {% endif %}
       </div>
+      {% if user.is_authenticated  %}
       <h1 class="title">Journal :</h1>
       <form method="post" >
         {% csrf_token %}
@@ -54,22 +54,22 @@
           <div class="row">
             <div class="col-sm">
               <h4>Device</h4>
-              <select name ='name' id='select' class="form-control">
+              <select name ='name' id='name' class="form-control">
               </select>
             </div>
             <div class="col-sm">
               <h4>From</h4>
-              <input class="form-control" type="datetime-local" name='date_from'> 
+              <input class="form-control" type="datetime-local" name='date_from' id='date_from'> 
             </div>
             <div class="col-sm">
               <h4>To</h4>
-              <input class="form-control" type="datetime-local"  name='date_to'>
+              <input class="form-control" type="datetime-local"  name='date_to' id='date_to'>
             </div>
           </div>
           <div class="row">
             <div class="col-sm">
               <h4>Type de message</h4>
-              <select name='type_message' class="form-control">
+              <select name='select_type' id='select_type' class="form-control">
                 <option value='0'></option>
                 <option value='F1'>Ligne de vie</option> 
                 <option value='F3'>Réalisé</option>
@@ -81,11 +81,11 @@
             </div>
             <div class="col-sm">
               <h4>Filter</h4>
-              <input class="form-control" type="text"  name='filter_message'>
+              <input class="form-control" type="text"  name='filter_message' id='filter_message'>
             </div>
             <div class="col-sm">
               <h4>Nombre de messages</h4>
-              <input class="form-control" type="text"  value="15" name='limit'>
+              <input class="form-control" type="text"  value="100" name='limit' id='limit'>
             </div>
           </div>
         </div>
@@ -102,15 +102,53 @@
       <script type="text/javascript" src="{% static 'journal.js' %}"></script>
       <script>
         document.addEventListener('DOMContentLoaded', function () {
-           var input = document.getElementById('select');
-           if (localStorage['name']) { 
-               input.value = localStorage['name']; 
-           }
-           input.onchange = function () {
-                localStorage['name'] = this.value;
+          var name = document.getElementById("name");
+            if (localStorage["name"]) { 
+              name.value = localStorage["name"]; 
+            }
+            name.onchange = function () {
+                localStorage["name"] = this.value;
+            }
+            var type_message = document.getElementById("select_type");
+            if (localStorage["select_type"]) { 
+              type_message.value = localStorage["select_type"]; 
+            }
+            type_message.onchange = function () {
+                localStorage["select_type"] = this.value;
+            }
+            var limit = document.getElementById("limit");
+            if (localStorage["limit"]) { 
+              limit.value = localStorage["limit"]; 
+            }
+            limit.onchange = function () {
+                localStorage["limit"] = this.value;
+            }
+            var date_from = document.getElementById('date_from');
+            if (localStorage['date_from']) { 
+              date_from.value = localStorage['date_from']; 
+            }
+            date_from.onchange = function () {
+                localStorage['date_from'] = this.value;
+            }
+            var date_to = document.getElementById("date_to");
+            if (localStorage["date_to"]) { 
+              date_to.value = localStorage["date_to"]; 
+            }
+            date_to.onchange = function () {
+                localStorage["date_to"] = this.value;
+            }
+            var filter_message = document.getElementById('filter_message');
+            if (localStorage['filter_message']) { 
+              filter_message.value = localStorage['filter_message']; 
+            }
+            filter_message.onchange = function () {
+                localStorage['filter_message'] = this.value;
             }
         });
         </script>
+        {% else %}
+        <h1 class="title">Veuillez vous connecter</h1>
+        {% endif %}
   </body>
   <footer>
       {% include 'footer.html' %}

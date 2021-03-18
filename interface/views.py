@@ -22,7 +22,6 @@ def decoder(request):
             messages.error(request,'Veuillez entrer un bon code SVP')
             return render(request, 'decoder.html')
     else :
-        messages.error(request,'Veuillez entrer un code SVP')
         return render(request, 'decoder.html')
 
 def connect(request):
@@ -33,7 +32,7 @@ def journal(request):
     name = request.POST.get('name', False)
     date_from = request.POST.get('date_from', False)
     date_to = request.POST.get('date_to', False)
-    type_message = request.POST.get('type_message', False)
+    type_message = request.POST.get('select_type', False)
     filter_message = request.POST.get('filter_message', False)
     limit = request.POST.get('limit', False)
     nrgyboxs = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices?limit=1000&offset=0',headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)

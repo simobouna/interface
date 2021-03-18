@@ -1,5 +1,5 @@
 var devices = JSON.parse(document.getElementById('devices').textContent);
-select = document.getElementById('select')
+select = document.getElementById('name')
 
 var i;
 for (i = 0; i < devices.length; i++) {

@@ -19,4 +19,4 @@ import requests, json
 
 res = json.loads(requests.get('https://liveobjects.orange-business.com/api/v0/auditlog/messages?offset=0&limit=1&sort=desc&@any=mac',headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
 
-print(res[0]['timestamp'][:16].replace('-','/').replace('T',' '))
+print(res[0]['timestamp'][:16])
