@@ -10,6 +10,8 @@ class Decode:
 
 
     def decode(self):
+        print(self.bits)
+        print(self.binary)
         index = 0
         list = []
         while (self.bits - index > 7):
