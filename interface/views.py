@@ -13,7 +13,6 @@ def decoder(request):
     if data :
         try:
             message = Decode(data).decode()
-            print(message)
             title = []
             for msg in message:
                 title.append(get_type(msg))

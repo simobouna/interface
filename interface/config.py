@@ -72,7 +72,7 @@ def get_type(type, second_type):
             3 : ['Uplink : Realized',[4,4,6,4,6,7,4,5,5,6,7,4,11,2,7,4,5,5,6,7,4,11,2,1,2,1,8,7,16,16,16,16]],
             4 : ['Uplink : Acquitement : Programme de marche',[4,4,4,1,7,5,6,5,6,5,6,5,11,5]],
             5 : ['Uplink : Acquitement : Programme hebdomadaire',[4,4,4,1,6,8,16,8]],
-            6 : ['Uplink : general_configuration', [4,4,4,25,26,7,7,5,10,1,11,7,11,1,11,7,11,1,1]], 
+            6 : ['Uplink : general_configuration', [4,4,4,25,26,7,7,5,10,1,5,6,7,11,1,5,6,7,11,1,1]], 
             7 : ['Uplink : Programme', [4,4,4,2,3,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7,5,6,7]]
         }[second_type]
     else:
