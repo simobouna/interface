@@ -1,13 +1,53 @@
-var devices = JSON.parse(document.getElementById('devices').textContent);
-select = document.getElementById('name')
+window.onload = function() {
+    var devices = JSON.parse(document.getElementById('name_var').textContent);
+    var groupes = JSON.parse(document.getElementById('groupe_var').textContent);
+    var subjectSel = document.getElementById("groupe");
+    var topicSel = document.getElementById("name");
+    var i
+    for (i = 0; i < groupes.length; i++) {
+        subjectSel.options[subjectSel.options.length] = new Option(groupes[i], groupes[i]);
+    }
+    subjectSel.onchange = function() {
+        topicSel.length = 0;
+        //display correct values
+        var i
+        for (i = 0; i < devices.length; i++) {
+        split = devices[i].split(',');
+        if (split[1].search(this.value) != -1){
+            topicSel.options[topicSel.options.length] = new Option(split[0], split[0]);
+        }
+        if (this.value === '/'){
+            topicSel.options[topicSel.options.length] = new Option(split[0], split[0]);
+        } 
+      }
+    }
+}
+
+
+
+
+// var groupes = JSON.parse(document.getElementById('groupe_var').textContent);
+// select_groupe = document.getElementById('groupe')
+
+// var i;
+// for (i = 0; i < groupes.length; i++) {
+//     option = document.createElement('option');
+//     option.setAttribute("value", groupes[i]);
+//     option.textContent = groupes[i];
+//     select_groupe.append(option);
+// }
+
+var tags = JSON.parse(document.getElementById('tag_var').textContent);
+select_tag = document.getElementById('tag')
 
 var i;
-for (i = 0; i < devices.length; i++) {
+for (i = 0; i < tags.length; i++) {
     option = document.createElement('option');
-    option.setAttribute("value", devices[i]);
-    option.textContent = devices[i];
-    select.append(option);
+    option.setAttribute("value", tags[i]);
+    option.textContent = tags[i];
+    select_tag.append(option);
 }
+
 
 var types = JSON.parse(document.getElementById('names').textContent);
 var datas = JSON.parse(document.getElementById('data').textContent);

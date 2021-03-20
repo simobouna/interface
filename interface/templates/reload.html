@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+  {% load static %}
+  
+  <html lang="en" dir="ltr">
+    <head>
+      <title>NRGY Admin</title>
+      {% include 'style.html' %}
+    </head>
+  
+  <body>
+      <!-- Header HTML -->
+      {% include 'head.html' %}
+      <style>
+        h2{
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 200px;
+
+        }
+      </style>
+        <!-- Alertes en fonction des actions utilisateurs -->
+        <div>
+          {% if messages %}
+              {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                  <div class="alert alert-success"><strong>{{ message }}</strong></div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                  <div class="alert alert-warning"><strong>{{ message }}</strong></div>
+                {% else %}
+                  <div class="alert alert-danger"><strong>{{ message }}</strong></div>
+                {% endif %}
+              {% endfor %}
+          {% endif %}
+      </div>
+      {% if user.is_authenticated  %}
+      <h2 class="title">Actualiser les données de la base de données</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="text-center mx-auto">
+                    <button class="btn btn--radius-2 btn--blue btn-outline-sitinnov " type="submit">
+                        <a class="text-decoration-none text-reset">Reload</a>
+                    </button>
+                </div>
+            </form>
+  </body>
+  {% else %}
+  <h2 class="title">Veuillez vous connecter</h2>
+  {% endif %}
+  <footer>
+      {% include 'footer.html' %}
+  </footer>
+  
+  </html>

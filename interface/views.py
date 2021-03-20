@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from interface.models import *
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -6,7 +7,7 @@ import requests, json
 from .config_name import get_type
 from .decode import Decode 
 def index(request):
-        return render(request, 'index.html')
+    return render(request, 'index.html')
        
 def decoder(request):
     data = request.POST.get('text', False)
@@ -28,18 +29,18 @@ def connect(request):
 
 
 def journal(request):
+    tags = sorted([tag.Tag for tag in Tag.objects.all()])
+    groupes = [groupe.Groupe for groupe in Groupe.objects.all()]
+    devices = [devices.Name+','+devices.IdGroupe.Groupe for devices in Device.objects.all()]
     name = request.POST.get('name', False)
     date_from = request.POST.get('date_from', False)
     date_to = request.POST.get('date_to', False)
     type_message = request.POST.get('select_type', False)
     filter_message = request.POST.get('filter_message', False)
     limit = request.POST.get('limit', False)
-    nrgyboxs = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices?limit=1000&offset=0',headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
-    names = dict()
-    for i in range(len(nrgyboxs)):
-        names.update({ nrgyboxs[i]['name'] : nrgyboxs[i]['id']})
+
     if name :
-        nodeId = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices/'+names[name],headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)['interfaces'][0]['nodeId']
+        nodeId = Device.objects.get(Name=name).Devui
         requete = 'https://liveobjects.orange-business.com/api/v0/auditlog/messages?offset=0&sort=desc&limit='+ limit + '&source.nodeId=' + nodeId
         if date_from :
             requete +=  '&from='+ date_from
@@ -97,7 +98,7 @@ def journal(request):
                 else :
                     output_titles.append(["Message","Timestamp,Desc,Detail desc,Port,fcnt,sf",'000000'])
                     output_values.append(tmp_value)
-            return render(request, 'journal.html',{'devices': list(names.keys()), 'payloads': output_values, 'type': output_titles ,'type_message': type_message})
+            return render(request, 'journal.html',{'devices': devices ,'tags': tags,'groupes': groupes, 'payloads': output_values, 'type': output_titles ,'type_message': type_message})
         else :
             for i in range(len(msgs)):
                 if 'payload' in msgs[i]['content'] and msgs[i]['content']['payload'][0:2] == type_message:
@@ -141,9 +142,9 @@ def journal(request):
                         output_titles.append(["Message","Timestamp,Desc,Detail desc,Port,fcnt,sf",'000000'])
                         output_values.append(tmp_value)
 
-            return render(request, 'journal.html',{'devices': list(names.keys()), 'payloads': output_values, 'type': output_titles, 'type_message': type_message})
+            return render(request, 'journal.html',{'devices': devices ,'tags': tags,'groupes': groupes, 'payloads': output_values, 'type': output_titles, 'type_message': type_message})
     else:
-        return render(request, 'journal.html',{'devices': list(names.keys())})
+        return render(request, 'journal.html',{'devices': devices,'tags': tags,'groupes': groupes})
 
 def Login(request):
     # Fonction d'authentification de l'utilisateur.
@@ -163,3 +164,25 @@ def Logout(request):
 	# Page de déconnexion, déconnecte et renvoie à l'accueil
 	logout(request)
 	return render(request, 'index.html')
+
+def reload(request):
+    if request.method == 'POST':
+        try:
+            groupes = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/groups?limit=100&offset=0',headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
+            Groupe.objects.all().delete()
+            for i in range(len(groupes)):
+                Groupe.objects.create(IdGroupe=groupes[i]['id'],Groupe=groupes[i]['path'])
+            nrgyboxs = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices?limit=1000&offset=0',headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)
+            Device.objects.all().delete()
+            Tag.objects.all().delete()
+            for i in range(len(nrgyboxs)):
+                nodeId = json.loads(requests.get('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices/'+nrgyboxs[i]['id'],headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}).content)['interfaces'][0]['nodeId']
+                tmp = Device.objects.create(Devui=nodeId,IdGroupe=Groupe.objects.get(IdGroupe=nrgyboxs[i]['group']['id']),Name=nrgyboxs[i]['name'],IdLora=nrgyboxs[i]['id'])
+                for tag in nrgyboxs[i]['tags']:
+                    if not Tag.objects.filter(Tag = tag):
+                        Tag.objects.create(Tag=tag)
+                    tmp.Tag.add(Tag.objects.get(Tag=tag))
+            messages.success(request,'La base de données est réinitialisée avec succès')
+        except:
+            messages.error(request,'Error')  
+    return render(request, 'reload.html')
