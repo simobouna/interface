@@ -117,18 +117,8 @@
       <script>
         document.addEventListener('DOMContentLoaded', function () {
           var name = document.getElementById("name");
-            if (localStorage["name"]) { 
-              name.value = localStorage["name"]; 
-            }
             name.onchange = function () {
                 localStorage["name"] = this.value;
-            }
-            var groupe = document.getElementById("groupe");
-            if (localStorage["groupe"]) { 
-              groupe.value = localStorage["groupe"]; 
-            }
-            groupe.onchange = function () {
-                localStorage["groupe"] = this.value;
             }
             var tag = document.getElementById("tag");
             if (localStorage["tag"]) { 
