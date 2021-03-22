@@ -31,7 +31,12 @@ def connect(request):
 def journal(request):
     tags = sorted([tag.Tag for tag in Tag.objects.all()])
     groupes = [groupe.Groupe for groupe in Groupe.objects.all()]
-    devices = [devices.Name+','+devices.IdGroupe.Groupe for devices in Device.objects.all()]
+    devices = []
+    for dev in Device.objects.all():
+        tmp = dev.Name+','+dev.IdGroupe.Groupe+','
+        for tag in dev.Tag.all():
+            tmp += tag.Tag
+        devices.append(tmp)
     name = request.POST.get('name', False)
     date_from = request.POST.get('date_from', False)
     date_to = request.POST.get('date_to', False)

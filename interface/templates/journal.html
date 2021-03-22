@@ -59,14 +59,14 @@
               </select>
             </div>
             <div class="col-sm">
-              <h4>Device</h4>
-              <select name ='name' id='name' class="form-control">
+              <h4>Tag</h4>
+              <select name ='tag' id='tag' class="form-control">
+              <option value=''></option>
               </select>
             </div>
             <div class="col-sm">
-              <h4>Tag</h4>
-              <select name ='tag' id='tag' class="form-control">
-              <option></option>
+              <h4>Device</h4>
+              <select name ='name' id='name' class="form-control">
               </select>
             </div>
             <div class="col-sm">
@@ -119,13 +119,6 @@
           var name = document.getElementById("name");
             name.onchange = function () {
                 localStorage["name"] = this.value;
-            }
-            var tag = document.getElementById("tag");
-            if (localStorage["tag"]) { 
-              tag.value = localStorage["tag"]; 
-            }
-            tag.onchange = function () {
-                localStorage["tag"] = this.value;
             }
             var type_message = document.getElementById("select_type");
             if (localStorage["select_type"]) { 
