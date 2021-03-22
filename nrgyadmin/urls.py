@@ -26,4 +26,5 @@ urlpatterns = [
     path('decoder.html', views.decoder),
     path('journal.html', views.journal),
     path('reload.html', views.reload),
+    path('configuration.html', views.configuration),
 ]

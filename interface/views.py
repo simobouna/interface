@@ -191,3 +191,6 @@ def reload(request):
         except:
             messages.error(request,'Error')  
     return render(request, 'reload.html')
+
+def configuration(request): 
+    return render(request, 'configuration.html')
