@@ -192,5 +192,5 @@ def reload(request):
             messages.error(request,'Error')  
     return render(request, 'reload.html')
 
-def configuration(request): 
-    return render(request, 'configuration.html')
+def order(request): 
+    return render(request, 'order.html')

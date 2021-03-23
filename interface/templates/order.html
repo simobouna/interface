@@ -20,6 +20,10 @@
           height: 200px;
 
         }
+        h4{
+          text-align: center;
+          margin: 2% 0;
+        }
       </style>
         <!-- Alertes en fonction des actions utilisateurs -->
         <div>
@@ -36,15 +40,37 @@
           {% endif %}
       </div>
       {% if user.is_authenticated  %}
-      <h2 class="title">Configuration</h2>
-            <!--form method="POST">
+      <h2 class="title">Ordre</h2>
+            <form method="POST">
                 {% csrf_token %}
+                <div class="container" id='container'>
+                  <div class="row">
+                    <div class="col-sm">
+                      <h4>Ordre</h4>
+                      <select name ='order' id='order' class="form-control">
+                        <option></option>
+                        <option value="5">Configuration</option>
+                        <option value="2">Forcage</option>
+                        <option value="1">Programme</option>
+                      </select>
+                    </div>
+                    <div class="col-sm">
+                      <h4>Type</h4>
+                      <select name ='type' id='type' class="form-control">
+                      <option></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top: 5%;" id="input">
+                  </div>
+                </div>
                 <div class="text-center mx-auto">
-                    <button class="btn btn--radius-2 btn--blue btn-outline-sitinnov " type="submit">
-                        <a class="text-decoration-none text-reset">Reload</a>
+                    <button class="btn btn--radius-2 btn--blue btn-outline-sitinnov " style="margin-top: 2%;" type="submit">
+                        <a class="text-decoration-none text-reset" >Envoyer</a>
                     </button>
                 </div>
-            </form-->
+            </form>
+            <script type="text/javascript" src="{% static 'order.js' %}"></script>
   </body>
   {% else %}
   <h2 class="title">Veuillez vous connecter</h2>
