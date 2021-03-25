@@ -46,7 +46,26 @@
                 <div class="container" id='container'>
                   <div class="row">
                     <div class="col-sm">
-                      <h4>Ordre</h4>
+                      <h4>Groupe</h4>
+                      <select name ='groupe' id='groupe' style="margin-top: 12%;" class="form-control">
+                        <option></option>
+                      </select>
+                    </div>
+                    <div class="col-sm">
+                      <h4>Tag</h4>
+                      <select name ='tag' id='tag' style="margin-top: 12%;" class="form-control">
+                      <option value=''></option>
+                      </select>
+                    </div>
+                    <div class="col-sm">
+                      <h4>Device</h4>
+                      <select name ='name' id='name' class="form-control" multiple>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm">
+                      <h4 style="margin-top: 15%;">Ordre</h4>
                       <select name ='order' id='order' class="form-control">
                         <option></option>
                         <option value="5">Configuration</option>
@@ -55,7 +74,7 @@
                       </select>
                     </div>
                     <div class="col-sm">
-                      <h4>Type</h4>
+                      <h4 style="margin-top: 15%;">Type</h4>
                       <select name ='type' id='type' class="form-control">
                       <option></option>
                       </select>
@@ -70,6 +89,9 @@
                     </button>
                 </div>
             </form>
+            {{ devices|json_script:'name_var' }} 
+            {{ groupes|json_script:'groupe_var' }} 
+            {{ tags|json_script:'tag_var' }}
             <script type="text/javascript" src="{% static 'order.js' %}"></script>
   </body>
   {% else %}

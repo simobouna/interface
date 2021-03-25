@@ -34,7 +34,7 @@ def get_type(message):
             8 : ['Configuration : realized_freq_daily', "Type, Typeconfig,Next Step, Fréquence","0000"], 
             9 : ['Configuration : realized_freq_minute', "Type, Typeconfig, Frequence","000"], 
             10 : ['Configuration : lifeline_freq_daily' , "Type, Typeconfig,Next Step, Fréquence","0000"],
-            11 : ['Configuration : lifeline_hour', "Type, Typeconfig, Heure","000"], 
+            11 : ['Configuration : lifeline_hour', "Type, Typeconfig, Heure","002"], 
             12 : ['Configuration : lifeline_freq', "Type, Typeconfig,Frequence","000"],
         }[message[1]]
     #Protocole LoRaWan

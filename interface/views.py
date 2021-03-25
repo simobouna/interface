@@ -6,6 +6,7 @@ from django.contrib import messages
 import requests, json
 from .config_name import get_type
 from .decode import Decode 
+from .encode import Encode 
 def index(request):
     return render(request, 'index.html')
        
@@ -154,7 +155,6 @@ def journal(request):
 def Login(request):
     # Fonction d'authentification de l'utilisateur.
     username = request.POST.get('username', 'nothing')
-    print(username)
     mdp = request.POST.get('mdp', 'nothing')
     user = authenticate(username=username, password=mdp)
     if user is not None:
@@ -192,5 +192,41 @@ def reload(request):
             messages.error(request,'Error')  
     return render(request, 'reload.html')
 
-def order(request): 
-    return render(request, 'order.html')
+def order(request):
+    tags = sorted([tag.Tag for tag in Tag.objects.all()])
+    groupes = [groupe.Groupe for groupe in Groupe.objects.all()]
+    devices = []
+    for dev in Device.objects.all():
+        tmp = dev.Name+','+dev.IdGroupe.Groupe+','
+        for tag in dev.Tag.all():
+            tmp += tag.Tag
+        devices.append(tmp)
+    devices_tosend = request.POST.getlist('name', False)
+    if request.method == 'POST':
+        try:
+            data = [[int(ele[1]) for ele in list(request.POST.items())[6:]]]
+            code = Encode(data).encode()
+        except:
+            messages.error(request,'Error')
+            return render(request, 'order.html',{'devices': devices ,'tags': tags,'groupes': groupes})
+        for dev in devices_tosend:
+            Id = Device.objects.get(Name=dev).IdLora
+            res = requests.post('https://liveobjects.orange-business.com/api/v1/deviceMgt/devices/'+Id+'/commands?validate=true'
+                                ,headers={'X-API-KEY': 'f4c185cd78404771bb9edfc3b614f2da'}
+                                ,json={"request":{
+                                            "connector": "lora",
+                                            "value": {
+                                                "data": code,
+                                                "port": "2"
+                                                    }
+                                                },
+                                        "policy":{
+                                            "expirationInSeconds": 20,
+                                            "ackTimeoutInSeconds": None,
+                                            "ackMode": "AUTO",
+                                            "attempts": 3
+                                            }
+                                        })
+            messages.success(request,'Payload '+code+' est envoyée à '+dev+' avec succés')
+
+    return render(request, 'order.html',{'devices': devices ,'tags': tags,'groupes': groupes})

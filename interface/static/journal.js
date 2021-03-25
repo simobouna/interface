@@ -1,12 +1,19 @@
 window.onload = function() {
     var devices = JSON.parse(document.getElementById('name_var').textContent);
     var groupes = JSON.parse(document.getElementById('groupe_var').textContent);
+    var tags = JSON.parse(document.getElementById('tag_var').textContent);
     var groupe_select = document.getElementById("groupe");
     var device_select = document.getElementById("name");
     var tag_select = document.getElementById("tag");
     var i
     for (i = 0; i < groupes.length; i++) {
         groupe_select.options[groupe_select.options.length] = new Option(groupes[i], groupes[i]);
+    }
+    for (i = 0; i < tags.length; i++) {
+        option = document.createElement('option');
+        option.setAttribute("value", tags[i]);
+        option.textContent = tags[i];
+        tag_select.append(option);
     }
     if (localStorage["groupe"]) {
         groupe_select.value = localStorage["groupe"]; 
@@ -58,17 +65,6 @@ window.onload = function() {
         device_select.value = localStorage["name"]; 
       }
     
-}
-
-var tags = JSON.parse(document.getElementById('tag_var').textContent);
-select_tag = document.getElementById('tag')
-
-var i;
-for (i = 0; i < tags.length; i++) {
-    option = document.createElement('option');
-    option.setAttribute("value", tags[i]);
-    option.textContent = tags[i];
-    select_tag.append(option);
 }
 
 

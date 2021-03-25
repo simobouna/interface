@@ -46,7 +46,7 @@ def get_type(type, second_type):
     elif type == 5: 
         return {
             0 : ['Configuration : date', [4,4,7,4,5,5,6,8]], #[4, 4, 'date' ([7,4,5]), 'hour' ([5,6]), 8]
-            1 : ['Configuration : ephemeris', [4,4,7], "mama,baba,ana"],
+            1 : ['Configuration : ephemeris', [4,4,7],],
             2 : ['Configuration : position', [4,4,25,26]],
             3 : ['Configuration : Ack' , [4,4,1,1,8]],
             4 : ['Configuration : min_button_priority', [4,4,7]],
@@ -54,10 +54,10 @@ def get_type(type, second_type):
             6 : ['Configuration : lamp_power', [4,4,10]], 
             7 : ['Configuration : realized_hour', [4,4,5,6]], #[4,4,'hour']
             8 : ['Configuration : realized_freq_daily', [4,4,1,7]], 
-            9 : ['Configuration : realized_freq_minute', [4,4,5,6]], #[4,4,'hour']
+            9 : ['Configuration : realized_freq_minute', [4,4,11]],
             10 : ['Configuration : lifeline_freq_daily' , [4,4,1,7]],
             11 : ['Configuration : lifeline_hour', [4,4,5,6]], #[4,4,'hour']
-            12 : ['Configuration : lifeline_freq', [4,4,5,6]],
+            12 : ['Configuration : lifeline_freq', [4,4,11]],
         }[second_type]
     #Protocole LoRaWan
     elif type == 14: 
