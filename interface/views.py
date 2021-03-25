@@ -142,10 +142,10 @@ def journal(request):
                     try :
                         decode = Decode(data).decode()
                         for msg in decode:
-                            output_titles.append([get_type(msg)[0],"Timestamp,Desc,Detail desc,Port,fcnt,sf," + get_type(msg)[1],'000000'+get_type(msg)[2]])
+                            output_titles.append([get_type(msg)[0],"Timestamp(UTC),Desc,Detail desc,Port,fcnt,sf," + get_type(msg)[1],'000000'+get_type(msg)[2]])
                             output_values.append( tmp_value + msg)
                     except :
-                        output_titles.append(["Message","Timestamp,Desc,Detail desc,Port,fcnt,sf",'000000'])
+                        output_titles.append(["Message","Timestamp(UTC),Desc,Detail desc,Port,fcnt,sf",'000000'])
                         output_values.append(tmp_value)
 
             return render(request, 'journal.html',{'devices': devices ,'tags': tags,'groupes': groupes, 'payloads': output_values, 'type': output_titles, 'type_message': type_message})
