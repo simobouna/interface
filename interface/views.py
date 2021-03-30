@@ -7,6 +7,8 @@ import requests, json
 from .config_name import get_type
 from .decode import Decode 
 from .encode import Encode 
+import urllib.parse
+
 def index(request):
     return render(request, 'index.html')
        
@@ -204,8 +206,25 @@ def order(request):
     devices_tosend = request.POST.getlist('name', False)
     if request.method == 'POST':
         try:
-            data = [[int(ele[1]) for ele in list(request.POST.items())[6:]]]
-            code = Encode(data).encode()
+            data = [[int(ele[1]) for ele in list(request.POST.items())[6:8]]]
+            # le case du forcage reset de la carte
+            if data[0][0] == 2 and data[0][1] == 6 :
+                code = '2C46A6D286801E'
+            # Le cas de l'année soustraire 2020
+            elif data[0][0] == 5 and data[0][1] == 0 :
+                data = [[int(ele[1]) for ele in list(request.POST.items())[6:]]]
+                data[0][2] -= 2020
+                code = Encode(data).encode()
+            # Recuperer la position d'une ville
+            elif data[0][0] == 5 and data[0][1] == 2 :
+                adresse = list(request.POST.items())[8][1]
+                data = [[5,2]]
+                gps = json.loads(requests.get("https://api-adresse.data.gouv.fr/search/?q=" + urllib.parse.quote(adresse)).content)['features'][0]['geometry']['coordinates']
+                data[0] += [int(i*100000) for i in gps]
+                code = Encode(data).encode()
+            else :
+                data = [[int(ele[1]) for ele in list(request.POST.items())[6:]]]
+                code = Encode(data).encode()
         except:
             messages.error(request,'Error')
             return render(request, 'order.html',{'devices': devices ,'tags': tags,'groupes': groupes})
@@ -227,6 +246,6 @@ def order(request):
                                             "attempts": 3
                                             }
                                         })
-            messages.success(request,'Payload '+code+' est envoyée à '+dev+' avec succés')
+        messages.success(request,'Payload '+code+' est envoyée à '+dev+' avec succés')
 
     return render(request, 'order.html',{'devices': devices ,'tags': tags,'groupes': groupes})
