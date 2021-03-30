@@ -11,23 +11,23 @@ window.onload = function() {
             'Message réalisé': "Type,TypeForçage",
             'Message Ligne de viE': "Type,TypeForçage",
             'Message Configuration générale': "Type,TypeForçage",
-            'Message Configuration programme': "Type,TypeForçage,Erase,TypePrj,Joursemaine",
-            'RAZ cumul': "Type,TypeForçage,PowerOnTimeerase,LampOnTimeerase,PowerLamperase,CycleNumbererase",
-            'Reset de la carte': "Type,TypeForçage",
+            'Message Configuration programme': "Type,TypeForçage,Erase (0: NOK | 1: OK),TypePrj,Joursemaine (0-6: Jour | 7: toute la semaine)",
+            'RAZ cumul': "Type,TypeForçage,PowerOnTimeerase (0: NOK | 1: OK),LampOnTimeerase(0: NOK | 1: OK),PowerLamperase(0: NOK | 1: OK),CycleNumbererase(0: NOK | 1: OK)",
+            'Redémarrage': "Type,TypeForçage",
         },
         '5' : {
-            'Date': "Type, Typeconfig, Année,Mois,Jour,Heure,Minute, Spare",
-            'Ephemeris':"Type, Typeconfig, Offset",
-            'Position':"Type, Typeconfig, Adresse",
-            'Ack': "Type, Typeconfig,Acquittementjournalier,AcquittementSemaine,Nb OTAA",
+            'Date': "Type, Typeconfig, Année,Mois,Jour,Heure,Minute",
+            'Ephéméride':"Type, Typeconfig, Offset (-2.1 = 21)",
+            'Adresse':"Type, Typeconfig, Adresse",
+            'Acquittement': "Type, Typeconfig,Acquittementjournalier (0: NOK | 1: OK),AcquittementSemaine (0: NOK | 1: OK),Nb OTAA",
             'Min_button_priority': "Type, Typeconfig, DPB",
             'Lamp_type': "Type, Typeconfig, Type de lampe",
             'Lamp_power': "Type, Typeconfig, Puissance",
             'Realized_hour': "Type, Typeconfig,Heure,Minute",
-            'Realized_freq_daily': "Type, Typeconfig,Next Step, Fréquence",
+            'Realized_freq_daily': "Type, Typeconfig,Next Step (0: Désactivé | 1: Changement d'index), Fréquence",
             'Realized_freq_minute': "Type, Typeconfig, Frequence",
-            'Lifeline_freq_daily': "Type, Typeconfig,Next Step, Fréquence",
-            'Lifeline_hour': "Type, Typeconfig, Heure,Minute",
+            'Lifeline_freq_daily': "Type, Typeconfig,Next Step (0: Désactivé | 1: Changement d'index), Fréquence",
+            'Lifeline_hour': "Type, Typeconfig, Heure (24: Power On | 25: Index 0 | 26: Index 15),Minute",
             'Lifeline_freq': "Type, Typeconfig,Frequence"
         }    ,
     }
@@ -52,25 +52,21 @@ window.onload = function() {
         input.setAttribute("id","input");
         var i;
         titles = orders[order.value][types[this.value]].split(',');
-        tmp = document.createElement('h4');
-        tmp.textContent = titles[0];
-        input.append(tmp);
         tmp = document.createElement('input');
         tmp.setAttribute("class","input--style-4");
         tmp.setAttribute("type","text");
         tmp.setAttribute("name",0);
         tmp.setAttribute("value",order.value);
+        tmp.setAttribute("type","hidden");
         input.append(tmp);
         var start = 1;
         if (order.value != 1){
-            tmp = document.createElement('h4');
-            tmp.textContent = titles[1];
-            input.append(tmp);
             tmp = document.createElement('input');
             tmp.setAttribute("class","input--style-4");
             tmp.setAttribute("type","text");
             tmp.setAttribute("name",1);
             tmp.setAttribute("value",type.value);
+            tmp.setAttribute("type","hidden");
             input.append(tmp);
             start = 2;
         }

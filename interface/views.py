@@ -214,13 +214,14 @@ def order(request):
             elif data[0][0] == 5 and data[0][1] == 0 :
                 data = [[int(ele[1]) for ele in list(request.POST.items())[6:]]]
                 data[0][2] -= 2020
+                data[0].append(0)
                 code = Encode(data).encode()
             # Recuperer la position d'une ville
             elif data[0][0] == 5 and data[0][1] == 2 :
                 adresse = list(request.POST.items())[8][1]
                 data = [[5,2]]
                 gps = json.loads(requests.get("https://api-adresse.data.gouv.fr/search/?q=" + urllib.parse.quote(adresse)).content)['features'][0]['geometry']['coordinates']
-                data[0] += [int(i*100000) for i in gps]
+                data[0] += [int(gps[1]*100000),int(gps[0]*100000)]
                 code = Encode(data).encode()
             else :
                 data = [[int(ele[1]) for ele in list(request.POST.items())[6:]]]
